@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avaliação Hormonal Feminina</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#ffffff;
+  --ink2:#f4f8fd;
+  --gold:#3a8fd6;
+  --gold2:#6db3ee;
+  --cream:#1a2e42;
+  --cream2:#2c4a65;
+  --mist:#7a96b0;
+  --border:rgba(58,143,214,0.2);
+  --border2:rgba(58,143,214,0.1);
+  --r:12px;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--cream);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%,rgba(58,143,214,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 50% at 90% 85%,rgba(109,179,238,0.05) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 35% at 5% 60%,rgba(58,143,214,0.04) 0%,transparent 50%);
+  pointer-events:none;z-index:0;
+}
+.shell{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:3px 1fr;
+  min-height:100vh;
+  max-width:720px;
+  margin:0 auto;
+  padding:0 24px 80px 32px;
+}
+.spine{
+  width:3px;
+  background:linear-gradient(to bottom,transparent 0%,var(--gold) 15%,var(--gold) 85%,transparent 100%);
+  margin-right:32px;
+  flex-shrink:0;
+  position:relative;
+}
+.spine-dot{
+  position:absolute;
+  left:50%;transform:translateX(-50%);
+  width:9px;height:9px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 14px rgba(58,143,214,0.5);
+  transition:top .6s cubic-bezier(.4,0,.2,1);
+}
+.content{padding-top:60px}
+
+/* INTRO */
+.intro{margin-bottom:56px;animation:rise .8s ease both}
+.eyebrow{
+  display:flex;align-items:center;gap:10px;
+  font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:28px;
+}
+.eyebrow i{display:block;width:28px;height:1px;background:var(--gold)}
+.intro h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(34px,8vw,54px);
+  font-weight:700;line-height:1.1;
+  color:var(--cream);margin-bottom:20px;
+}
+.intro h1 span{font-style:italic;color:var(--gold)}
+.intro-lead{font-size:15px;font-weight:300;line-height:1.8;color:var(--mist);max-width:480px;margin-bottom:36px}
+.intro-meta{display:flex;gap:32px;border-top:1px solid var(--border2);padding-top:24px}
+.meta-item{display:flex;flex-direction:column;gap:3px}
+.meta-n{font-family:'Fraunces',serif;font-size:20px;color:var(--gold)}
+.meta-l{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist)}
+
+/* PROGRESS */
+.prog-wrap{margin-bottom:36px}
+.prog-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.prog-step{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.prog-pct{font-family:'Fraunces',serif;font-size:22px;color:var(--cream2)}
+.prog-track{height:1px;background:var(--border2);position:relative}
+.prog-fill{
+  height:1px;
+  background:linear-gradient(90deg,rgba(109,179,238,0.6),var(--gold));
+  transition:width .7s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+.prog-fill::after{
+  content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:5px;height:5px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 8px var(--gold);
+}
+
+/* CARD */
+.qcard{animation:rise .45s ease both}
+.q-num{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--mist);margin-bottom:18px}
+.q-text{
+  font-family:'Fraunces',serif;
+  font-size:clamp(20px,4.5vw,27px);
+  font-weight:400;line-height:1.35;
+  color:var(--cream);margin-bottom:8px;
+}
+.q-hint{font-size:13px;color:var(--mist);font-style:italic;margin-bottom:28px;line-height:1.6}
+
+/* OPTIONS */
+.opts{display:flex;flex-direction:column;gap:8px;margin-bottom:32px}
+.opt{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 20px;
+  border:1px solid var(--border2);border-radius:var(--r);
+  cursor:pointer;background:transparent;
+  transition:border-color .2s,background .2s,transform .15s;
+  position:relative;overflow:hidden;
+}
+.opt::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(58,143,214,0.05),transparent);
+  opacity:0;transition:opacity .2s;
+}
+.opt:hover{border-color:rgba(58,143,214,0.45);transform:translateX(3px)}
+.opt:hover::before{opacity:1}
+.opt.on{border-color:var(--gold);background:rgba(58,143,214,0.06)}
+.opt.on::before{opacity:1}
+.opt-mark{
+  width:16px;height:16px;border-radius:50%;
+  border:1px solid rgba(58,143,214,0.3);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.opt.on .opt-mark{background:var(--gold);border-color:var(--gold)}
+.opt.on .opt-mark::after{content:'';width:5px;height:5px;border-radius:50%;background:#fff}
+.opt-txt{font-size:14px;color:var(--cream2);line-height:1.4;flex:1;text-align:left}
+
+/* SCALE */
+.scale-wrap{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.sc{
+  flex:1;min-width:52px;
+  padding:14px 6px 12px;
+  border:1px solid var(--border2);border-radius:var(--r);
+  text-align:center;cursor:pointer;
+  transition:all .2s;background:transparent;
+}
+.sc:hover{border-color:rgba(58,143,214,0.4)}
+.sc.on{border-color:var(--gold);background:rgba(58,143,214,0.06)}
+.sc-n{font-family:'Fraunces',serif;font-size:20px;color:var(--gold);display:block;margin-bottom:4px}
+.sc-l{font-size:9px;letter-spacing:.5px;color:var(--mist);line-height:1.3;display:block}
+.scale-poles{display:flex;justify-content:space-between;font-size:10px;color:var(--mist);letter-spacing:.5px;margin-bottom:28px}
+
+/* BUTTON */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:15px 32px;
+  background:transparent;border:1px solid var(--gold);border-radius:var(--r);
+  color:var(--gold);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
+  cursor:pointer;transition:all .25s;
+  width:100%;justify-content:center;
+}
+.btn:hover{background:var(--gold);color:var(--ink)}
+.btn:disabled{opacity:.25;cursor:not-allowed}
+.btn-arr{transition:transform .2s;font-size:16px}
+.btn:hover:not(:disabled) .btn-arr{transform:translateX(4px)}
+
+/* INPUTS */
+.field{margin-bottom:16px}
+.field-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:8px;display:block}
+.field input{
+  width:100%;
+  background:#f4f8fd;
+  border:1px solid var(--border2);border-radius:var(--r);
+  padding:14px 18px;
+  color:var(--cream);
+  font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;transition:border-color .2s;
+}
+.field input::placeholder{color:rgba(122,112,96,0.5)}
+.field input:focus{border-color:rgba(58,143,214,0.55)}
+
+/* RESULT */
+.result-wrap{animation:rise .6s ease both}
+.result-header{border-bottom:1px solid var(--border2);padding-bottom:36px;margin-bottom:36px}
+.result-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.result-title{
+  font-family:'Fraunces',serif;
+  font-size:clamp(26px,6vw,40px);font-weight:400;line-height:1.2;
+  color:var(--cream);margin-bottom:16px;
+}
+.result-title em{font-style:italic;color:var(--gold)}
+.result-desc{font-size:14px;font-weight:300;color:var(--mist);line-height:1.8;max-width:520px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chip{
+  font-size:11px;letter-spacing:.5px;
+  border:1px solid var(--border);color:var(--gold2);
+  padding:5px 14px;border-radius:100px;
+  background:rgba(58,143,214,0.06);
+}
+.reco-list{display:flex;flex-direction:column;gap:0;margin-bottom:40px}
+.reco{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--border2)}
+.reco:last-child{border-bottom:none}
+.reco-num{
+  font-family:'Fraunces',serif;font-size:30px;font-style:italic;
+  color:rgba(201,169,110,0.25);flex-shrink:0;line-height:1;min-width:28px;
+}
+.reco-body h4{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:5px;letter-spacing:.3px}
+.reco-body p{font-size:13px;font-weight:300;color:var(--mist);line-height:1.7}
+.wa-btn{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  width:100%;padding:18px;
+  background:linear-gradient(135deg,#1fba57,#128c3e);
+  border:none;border-radius:var(--r);
+  color:white;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:.5px;
+  cursor:pointer;text-decoration:none;transition:all .25s;
+}
+.wa-btn:hover{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 12px 32px rgba(31,186,87,0.2)}
+.wa-btn svg{width:20px;height:20px;fill:white;flex-shrink:0}
+.privacy{text-align:center;font-size:11px;color:rgba(122,112,96,0.6);margin-top:14px;letter-spacing:.3px}
+
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="spine"><div class="spine-dot" id="sdot" style="top:10%"></div></div>
+  <div class="content">
+
+    <div class="intro" id="intro">
+      <div class="eyebrow"><i></i> Avaliação Gratuita <i></i></div>
+      <h1>O que seu corpo<br>está tentando<br><span>te dizer</span></h1>
+      <p class="intro-lead">Cansaço que não passa, peso que resiste, sono interrompido, humor instável — esses sinais têm origem hormonal. Esta avaliação leva menos de 4 minutos e pode mudar a forma como você se cuida.</p>
+      <div class="intro-meta">
+        <div class="meta-item"><span class="meta-n">11</span><span class="meta-l">perguntas</span></div>
+        <div class="meta-item"><span class="meta-n">4 min</span><span class="meta-l">duração</span></div>
+        <div class="meta-item"><span class="meta-n">100%</span><span class="meta-l">gratuito</span></div>
+      </div>
+    </div>
+
+    <div id="quiz">
+      <div class="prog-wrap">
+        <div class="prog-row">
+          <span class="prog-step" id="pstep">Pergunta 1 de 11</span>
+          <span class="prog-pct" id="ppct">0%</span>
+        </div>
+        <div class="prog-track"><div class="prog-fill" id="pfill" style="width:0%"></div></div>
+      </div>
+      <div id="qcard" class="qcard"></div>
+    </div>
+
+    <div id="result" style="display:none"></div>
+
+  </div>
+</div>
+<script>
+const QS=[
+  {id:1,type:"scale",lo:"Nunca",hi:"Todo dia",
+   text:"Com que frequência você sente um cansaço que não melhora mesmo dormindo?",
+   hint:"Aquele esgotamento que já virou parte da rotina."},
+  {id:2,type:"opts",text:"Você percebeu acúmulo de gordura na barriga — mesmo sem mudar sua alimentação?",
+   opts:[
+    {t:"Não, meu corpo está basicamente igual",s:0},
+    {t:"Um pouco, mas não me incomoda muito",s:1},
+    {t:"Sim, e fico frustrada porque não consigo perder",s:2},
+    {t:"Sim, muito — nada parece funcionar",s:3},
+   ]},
+  {id:3,type:"opts",text:"Como está seu sono?",
+   hint:"Considere adormecer, acordar no meio da noite e como se sente ao levantar.",
+   opts:[
+    {t:"Durmo bem e acordo disposta",s:0},
+    {t:"Irregular — boas e más noites se alternam",s:1},
+    {t:"Acordo no meio da noite com frequência",s:2},
+    {t:"Muito fragmentado, acordo exausta todo dia",s:3},
+   ]},
+  {id:4,type:"opts",text:"Você sente ondas de calor, suores noturnos ou calor repentino sem razão?",
+   opts:[
+    {t:"Não",s:0},
+    {t:"Raramente, de forma leve",s:1},
+    {t:"Sim, e atrapalha meu dia a dia",s:2},
+    {t:"Com muita intensidade, especialmente à noite",s:3},
+   ]},
+  {id:5,type:"opts",text:"Como você descreveria seu desejo sexual nos últimos meses?",
+   opts:[
+    {t:"Normal para mim, sem mudanças",s:0},
+    {t:"Um pouco reduzido, mas não me afeta muito",s:1},
+    {t:"Bem reduzido — raramente tenho interesse",s:2},
+    {t:"Praticamente ausente",s:3},
+   ]},
+  {id:6,type:"scale",lo:"Nunca",hi:"Todo dia",
+   text:"Com que frequência você se sente irritada, ansiosa ou triste sem motivo claro?"},
+  {id:7,type:"opts",text:"Seu relacionamento tem sentido o peso disso — pela distância, cansaço ou mudanças de humor?",
+   opts:[
+    {t:"Não, estamos bem",s:0},
+    {t:"Às vezes, mas não é algo sério",s:1},
+    {t:"Sim, percebo um afastamento",s:2},
+    {t:"É uma área que me preocupa bastante",s:3},
+   ]},
+  {id:8,type:"opts",text:"Seu metabolismo parece ter mudado — como se o corpo resistisse mais ao emagrecimento?",
+   opts:[
+    {t:"Não, consigo manter meu peso sem dificuldade",s:0},
+    {t:"Está mais difícil, mas ainda consigo",s:1},
+    {t:"Sim — o que funcionava antes não funciona mais",s:2},
+    {t:"Sim, e já tentei muitas coisas sem resultado",s:3},
+   ]},
+  {id:9,type:"opts",text:"Você já ouviu falar em terapia de reposição hormonal (TRH) ou em novas abordagens para emagrecimento feminino?",
+   opts:[
+    {t:"Nunca ouvi, mas tenho curiosidade",s:1},
+    {t:"Já ouvi e quero entender se se aplica a mim",s:2},
+    {t:"Pesquisei e considero uma opção",s:3},
+    {t:"Já faço algum tipo de tratamento",s:2},
+   ]},
+  {id:10,type:"opts",text:"Qual é a sua faixa de idade?",
+   opts:[
+    {t:"Menos de 38 anos",s:0},
+    {t:"38 a 44 anos",s:1},
+    {t:"45 a 52 anos",s:2},
+    {t:"Acima de 52 anos",s:2},
+   ]},
+  {id:11,type:"opts",
+   text:"Pensando em se cuidar com acompanhamento especializado, qual faixa de investimento mensal faz sentido para você?",
+   hint:"Isso nos ajuda a apresentar as opções mais adequadas ao seu perfil.",
+   opts:[
+    {t:"Até R$ 300 por mês",s:0,inv:0},
+    {t:"Entre R$ 300 e R$ 700 por mês",s:1,inv:1},
+    {t:"Entre R$ 700 e R$ 1.500 por mês",s:2,inv:2},
+    {t:"Acima de R$ 1.500 — quero o melhor protocolo disponível",s:3,inv:3},
+   ]},
+  {type:"contact",
+   text:"Sua avaliação está pronta.",
+   hint:"Preencha abaixo para receber seu resultado e ser atendida por uma das nossas especialistas."}
+];
+
+const TOTAL=QS.length-1;
+let cur=0,score=0,inv=0,uname="";
+let lastS=0,lastSc=0,picked=false;
+
+function setProgress(step){
+  const pct=Math.round((step/TOTAL)*100);
+  document.getElementById("pfill").style.width=pct+"%";
+  document.getElementById("ppct").textContent=pct+"%";
+  document.getElementById("pstep").textContent=
+    step>=TOTAL?"Última etapa":`Pergunta ${step+1} de ${TOTAL}`;
+  document.getElementById("sdot").style.top=(10+(step/TOTAL)*80)+"%";
+}
+
+function anim(el){el.style.animation="none";void el.offsetHeight;el.style.animation="rise .4s ease both"}
+
+function render(){
+  const q=QS[cur];
+  const card=document.getElementById("qcard");
+  anim(card);
+  setProgress(cur);
+  picked=false;
+
+  if(q.type==="contact"){
+    card.innerHTML=`
+      <div class="q-num">Última etapa</div>
+      <div class="q-text">${q.text}</div>
+      <p class="q-hint">${q.hint}</p>
+      <div class="field"><label class="field-lbl">Como gosta de ser chamada?</label><input id="fn" type="text" placeholder="Seu primeiro nome" autocomplete="off"></div>
+      <div class="field"><label class="field-lbl">Seu WhatsApp</label><input id="fp" type="tel" placeholder="(XX) 9XXXX-XXXX" autocomplete="off"></div>
+      <button class="btn" onclick="submit()">Ver meu resultado <span class="btn-arr">→</span></button>`;
+    return;
+  }
+
+  if(q.type==="scale"){
+    card.innerHTML=`
+      <div class="q-num">Pergunta ${q.id} de ${TOTAL}</div>
+      <div class="q-text">${q.text}</div>
+      ${q.hint?`<p class="q-hint">${q.hint}</p>`:""}
+      <div class="scale-wrap" id="sw">
+        ${[0,1,2,3,4].map(i=>`<div class="sc" data-i="${i}" onclick="pickScale(${i})"><span class="sc-n">${i+1}</span><span class="sc-l">${["Nunca","Raramente","Às vezes","Frequente","Todo dia"][i]}</span></div>`).join("")}
+      </div>
+      <div class="scale-poles"><span>${q.lo}</span><span>${q.hi}</span></div>
+      <button class="btn" id="btn" disabled onclick="next()">Próxima <span class="btn-arr">→</span></button>`;
+    return;
+  }
+
+  card.innerHTML=`
+    <div class="q-num">Pergunta ${q.id} de ${TOTAL}</div>
+    <div class="q-text">${q.text}</div>
+    ${q.hint?`<p class="q-hint">${q.hint}</p>`:""}
+    <div class="opts">
+      ${q.opts.map((o,i)=>`<div class="opt" data-i="${i}" onclick="pickOpt(${i},${o.s},${o.inv!==undefined?o.inv:-1})"><div class="opt-mark"></div><div class="opt-txt">${o.t}</div></div>`).join("")}
+    </div>
+    <button class="btn" id="btn" disabled onclick="next()">Próxima <span class="btn-arr">→</span></button>`;
+}
+
+function pickOpt(i,s,invVal){
+  document.querySelectorAll(".opt").forEach(o=>o.classList.remove("on"));
+  document.querySelector(`.opt[data-i="${i}"]`).classList.add("on");
+  if(picked){score=score-lastS+s;}else{score+=s;picked=true;}
+  lastS=s;
+  if(invVal>=0)inv=invVal;
+  document.getElementById("btn").disabled=false;
+}
+function pickScale(i){
+  document.querySelectorAll(".sc").forEach(o=>o.classList.remove("on"));
+  document.querySelector(`.sc[data-i="${i}"]`).classList.add("on");
+  if(picked){score=score-lastSc+i;}else{score+=i;picked=true;}
+  lastSc=i;
+  document.getElementById("btn").disabled=false;
+}
+function next(){cur++;render();}
+
+function submit(){
+  const fn=document.getElementById("fn").value.trim();
+  const fp=document.getElementById("fp").value.trim();
+  if(!fn||!fp){alert("Por favor preencha seu nome e WhatsApp.");return;}
+  uname=fn;showResult();
+}
+
+function getProfile(){
+  if(score>=21)return{
+    label:"Atenção Importante",
+    head:`${uname}, seus sintomas <em>precisam de atenção agora</em>`,
+    desc:"O conjunto de sinais que você relatou indica um desequilíbrio hormonal significativo. Isso não é envelhecimento inevitável — é o seu corpo pedindo cuidado personalizado. Existe tratamento eficaz e baseado em evidências para o que você está sentindo.",
+    chips:["Fadiga persistente","Gordura abdominal resistente","Sono fragmentado","Humor instável","Saúde sexual","Metabolismo lento"],
+    recos:[
+      {n:"01",t:"Avaliação com médico especialista em saúde hormonal feminina",p:"Exames direcionados para identificar com precisão os hormônios envolvidos e, quando indicado, iniciar a terapia de reposição hormonal (TRH) mais adequada ao seu perfil."},
+      {n:"02",t:"Acompanhamento nutricional especializado nessa fase",p:"Estratégias metabólicas desenhadas para mulheres nessa transição — com foco em gordura visceral, equilíbrio energético e bem-estar geral."},
+      {n:"03",t:"Protocolo integrado de saúde feminina",p:"Uma abordagem que combina suporte hormonal, nutricional e comportamental. O médico avaliará todas as ferramentas disponíveis — incluindo novos recursos farmacológicos quando pertinente — para compor o protocolo mais adequado ao seu caso."},
+    ]
+  };
+  if(score>=13)return{
+    label:"Momento de Agir",
+    head:`${uname}, você está em um <em>ponto de virada</em>`,
+    desc:"Seus sintomas são moderados, mas já afetam sua qualidade de vida. Esse é o momento ideal para intervir — a janela preventiva ainda está aberta, e as respostas ao tratamento tendem a ser muito melhores quando se age antes do agravamento.",
+    chips:["Metabolismo em transição","Oscilações de humor","Qualidade do sono","Energia reduzida"],
+    recos:[
+      {n:"01",t:"Mapeamento hormonal preventivo",p:"Entender seus níveis hormonais agora cria a base para um cuidado proativo — muito mais eficaz do que aguardar os sintomas se intensificarem."},
+      {n:"02",t:"Nutrição hormonal e metabólica",p:"Ajustes alimentares específicos para essa fase que impactam diretamente o humor, o sono, o peso e a disposição."},
+      {n:"03",t:"Protocolo de suporte personalizado",p:"Com base na sua avaliação, o médico definirá as melhores estratégias clínicas — suplementação, ajustes hormonais ou outras abordagens dentro de um acompanhamento próximo e humanizado."},
+    ]
+  };
+  return{
+    label:"Atenção Preventiva",
+    head:`${uname}, o melhor momento para <em>se conhecer melhor</em> é agora`,
+    desc:"Seus sintomas ainda são leves, mas monitorar sua saúde hormonal nesse momento é um investimento inteligente. Pequenas intervenções precoces fazem uma diferença enorme ao longo dos anos.",
+    chips:["Prevenção hormonal","Manutenção do peso","Qualidade de vida"],
+    recos:[
+      {n:"01",t:"Check-up hormonal de base",p:"Conhecer seus níveis hoje cria uma referência valiosa para o acompanhamento ao longo dos anos — e permite agir antes que os sintomas se instalem."},
+      {n:"02",t:"Estratégia nutricional preventiva",p:"Pequenos ajustes agora evitam grandes problemas depois — especialmente em relação ao metabolismo e à composição corporal."},
+      {n:"03",t:"Educação e acompanhamento contínuo",p:"Entender as fases do climatério e o que esperar te coloca no controle da sua saúde de forma muito mais consciente e segura."},
+    ]
+  };
+}
+
+function showResult(){
+  document.getElementById("quiz").style.display="none";
+  document.getElementById("intro").style.display="none";
+  const rDiv=document.getElementById("result");
+  rDiv.style.display="block";
+  const p=getProfile();
+  const num="5548999999999";// TROQUE PELO SEU NÚMERO
+  const msg=encodeURIComponent(`Olá! Fiz a avaliação hormonal e meu resultado foi "${p.label}". Quero saber mais sobre o atendimento especializado.`);
+  rDiv.innerHTML=`<div class="result-wrap">
+    <div class="result-header">
+      <div class="result-eyebrow">${p.label}</div>
+      <div class="result-title">${p.head}</div>
+      <p class="result-desc">${p.desc}</p>
+      <div class="chips">${p.chips.map(c=>`<span class="chip">${c}</span>`).join("")}</div>
+    </div>
+    <div class="reco-list">
+      ${p.recos.map(r=>`<div class="reco"><div class="reco-num">${r.n}</div><div class="reco-body"><h4>${r.t}</h4><p>${r.p}</p></div></div>`).join("")}
+    </div>
+    <a class="wa-btn" href="https://wa.me/${num}?text=${msg}" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Falar com especialista agora
+    </a>
+    <p class="privacy">Suas informações são confidenciais e tratadas com total sigilo</p>
+  </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+render();
+</script>
+</body>
+</html>
