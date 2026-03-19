@@ -38,29 +38,12 @@ body::before{
 }
 .shell{
   position:relative;z-index:1;
-  display:grid;
-  grid-template-columns:3px 1fr;
-  column-gap:48px;
   min-height:100vh;
-  max-width:720px;
+  max-width:620px;
   margin:0 auto;
-  padding:0 24px 80px 32px;
+  padding:0 24px 80px;
 }
-.spine{
-  width:3px;
-  background:linear-gradient(to bottom,transparent 0%,var(--gold) 15%,var(--gold) 85%,transparent 100%);
-  flex-shrink:0;
-  position:relative;
-}
-.spine-dot{
-  position:absolute;
-  left:50%;transform:translateX(-50%);
-  width:9px;height:9px;border-radius:50%;
-  background:var(--gold);
-  box-shadow:0 0 14px rgba(58,143,214,0.5);
-  transition:top .6s cubic-bezier(.4,0,.2,1);
-}
-.content{padding-top:60px}
+.content{padding-top:60px;text-align:left}
 
 /* INTRO */
 .intro{margin-bottom:56px;animation:rise .8s ease both}
@@ -173,8 +156,7 @@ body::before{
 
 @media(max-width:520px){
   .shell{
-    column-gap:20px;
-    padding:0 20px 80px 16px;
+    padding:0 18px 80px;
   }
 }
 
@@ -237,18 +219,12 @@ body::before{
 </head>
 <body>
 <div class="shell">
-  <div class="spine"><div class="spine-dot" id="sdot" style="top:10%"></div></div>
   <div class="content">
 
     <div class="intro" id="intro">
       <div class="eyebrow"><i></i> Avaliação Gratuita <i></i></div>
       <h1>O que seu corpo<br>está tentando<br><span>te dizer</span></h1>
       <p class="intro-lead">Cansaço que não passa, peso que resiste, sono interrompido, humor instável — esses sinais têm origem hormonal. Esta avaliação leva menos de 4 minutos e pode mudar a forma como você se cuida.</p>
-      <div class="intro-meta">
-        <div class="meta-item"><span class="meta-n">11</span><span class="meta-l">perguntas</span></div>
-        <div class="meta-item"><span class="meta-n">4 min</span><span class="meta-l">duração</span></div>
-        <div class="meta-item"><span class="meta-n">100%</span><span class="meta-l">gratuito</span></div>
-      </div>
     </div>
 
     <div id="quiz">
@@ -355,7 +331,6 @@ function setProgress(step){
   document.getElementById("ppct").textContent=pct+"%";
   document.getElementById("pstep").textContent=
     step>=TOTAL?"Última etapa":`Pergunta ${step+1} de ${TOTAL}`;
-  document.getElementById("sdot").style.top=(10+(step/TOTAL)*80)+"%";
 }
 
 function anim(el){el.style.animation="none";void el.offsetHeight;el.style.animation="rise .4s ease both"}
