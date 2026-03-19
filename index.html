@@ -327,10 +327,10 @@ const QS=[
    text:"Pensando em se cuidar com acompanhamento especializado, qual faixa de investimento mensal faz sentido para você?",
    hint:"Isso nos ajuda a apresentar as opções mais adequadas ao seu perfil.",
    opts:[
-    {t:"Até R$ 300 por mês",s:0,inv:0},
-    {t:"Entre R$ 300 e R$ 700 por mês",s:1,inv:1},
-    {t:"Entre R$ 700 e R$ 1.500 por mês",s:2,inv:2},
-    {t:"Acima de R$ 1.500 — quero o melhor protocolo disponível",s:3,inv:3},
+    {t:"Até R$ 500 por mês",s:0,inv:0},
+    {t:"Entre R$ 500 e R$ 1.000 por mês",s:1,inv:1},
+    {t:"Entre R$ 1.000 e R$ 2.000 por mês",s:2,inv:2},
+    {t:"Acima de R$ 2.000 por mês — quero o melhor protocolo possível",s:3,inv:3},
    ]},
   {type:"contact",
    text:"Sua avaliação está pronta.",
@@ -340,6 +340,7 @@ const QS=[
 const TOTAL=QS.length-1;
 let cur=0,score=0,inv=0,uname="";
 let lastS=0,lastSc=0,picked=false;
+const answers={};
 
 function setProgress(step){
   const pct=Math.round((step/TOTAL)*100);
@@ -399,6 +400,8 @@ function pickOpt(i,s,invVal){
   if(picked){score=score-lastS+s;}else{score+=s;picked=true;}
   lastS=s;
   if(invVal>=0)inv=invVal;
+  const q=QS[cur];
+  answers[`P${q.id||cur+1}`]=q.opts[i].t;
   document.getElementById("btn").disabled=false;
 }
 function pickScale(i){
@@ -406,15 +409,41 @@ function pickScale(i){
   document.querySelector(`.sc[data-i="${i}"]`).classList.add("on");
   if(picked){score=score-lastSc+i;}else{score+=i;picked=true;}
   lastSc=i;
+  const q=QS[cur];
+  const labels=["Nunca","Raramente","Às vezes","Frequente","Todo dia"];
+  answers[`P${q.id}`]=labels[i];
   document.getElementById("btn").disabled=false;
 }
 function next(){cur++;render();}
 
-function submit(){
+async function submit(){
   const fn=document.getElementById("fn").value.trim();
   const fp=document.getElementById("fp").value.trim();
   if(!fn||!fp){alert("Por favor preencha seu nome e WhatsApp.");return;}
-  uname=fn;showResult();
+  uname=fn;
+
+  const p=getProfile();
+  const answersText=Object.entries(answers).map(([k,v])=>`${k}: ${v}`).join("\n");
+  const body={
+    nome:fn,
+    whatsapp:fp,
+    perfil:p.label,
+    pontuacao:score,
+    investimento:answers["P11"]||"—",
+    respostas:answersText,
+    _subject:`Novo lead: ${fn} — ${p.label}`,
+    _captcha:"false"
+  };
+
+  try{
+    await fetch("https://formsubmit.co/ajax/cobclinica21@gmail.com",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify(body)
+    });
+  }catch(e){console.warn("Email não enviado:",e);}
+
+  showResult();
 }
 
 function getProfile(){
